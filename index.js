@@ -8,7 +8,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Temporary fake api
-app.get('/api/passwords', (req, res) => {
+app.get('/api/string', (req, res) => {
   // Return them as json
   res.json('hiii');
 });
@@ -19,7 +19,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.listen(port);
 
 console.log(`Heat map listening on ${port}`);
