@@ -4,7 +4,11 @@
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
+    "chai": "^4.1.2",
+    "jsdom": "^11.2.0",
+    "mocha": "^3.5.3",
     "react": "^15.6.1",
+    "react-addons-test-utils": "^15.6.2",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.13"
   },
