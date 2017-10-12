@@ -19,8 +19,7 @@ it('checks for app header text', () => {
   const component = renderIntoDocument(<App/>);
   const appHeader = findRenderedDOMComponentWithClass(component, 'App-header');
   expect(appHeader).to.be.ok;
-  const appHeaderText = appHeader.textContent;
-  expect(appHeaderText.text()).to.have.string('Some text');
+  expect(appHeader.textContent).to.have.string('Welcome to MyHeatMaps');
 });
 
 //TODO: make reusable function to check styles
@@ -29,5 +28,5 @@ it('checks for app header styles', () => {
   const appHeader = findRenderedDOMComponentWithClass(component, 'App-header');
   expect(appHeader).to.be.ok;
   expect(appHeader).to.have.style('backgroundColor', '#222');
-  expect(appHeader).to.have.style('color', 'blue');
+  expect(appHeader).to.have.style('color', 'white');
 });
