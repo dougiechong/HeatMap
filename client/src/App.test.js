@@ -6,7 +6,7 @@ import {
 } from 'react-addons-test-utils';
 //import {expect} from 'chai';
 const {expect} = require('chai')
-  .use(require('chai-style'))
+  .use(require('chai-style'));
 import App from './App';
 
 
@@ -29,4 +29,10 @@ it('checks for app header styles', () => {
   expect(appHeader).to.be.ok;
   expect(appHeader).to.have.style('backgroundColor', '#222');
   expect(appHeader).to.have.style('color', 'white');
+});
+
+it('checks strava login button api', () => {
+  const component = renderIntoDocument(<App/>);
+  const loginButton = findRenderedDOMComponentWithClass(component, 'Login-button');
+  expect(loginButton).to.be.ok;
 });

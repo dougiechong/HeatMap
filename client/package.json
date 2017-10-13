@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
+    "axios": "^0.16.2",
     "chai": "^4.1.2",
     "jsdom": "^11.2.0",
     "mocha": "^3.5.3",
