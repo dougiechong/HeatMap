@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-export default class LoginButton extends React.Component {
+export default class FetchDemo extends React.Component {
   constructor(props) {
     super(props);
 
@@ -11,9 +11,10 @@ export default class LoginButton extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`https://www.strava.com/api/v3/athletes/9238844/?access_token=${this.props.uid}`)
+    axios.get(`http://www.reddit.com/r/${this.props.subreddit}.json`)
       .then(res => {
         const posts = res.data.data.children.map(obj => obj.data);
+        console.log(posts);
         this.setState({ posts });
       });
   }
@@ -21,7 +22,7 @@ export default class LoginButton extends React.Component {
   render() {
     return (
       <div>
-        <h1>{`/r/${this.props.uid}`}</h1>
+        <h1>{`/r/${this.props.subreddit}`}</h1>
         <ul>
           {this.state.posts.map(post =>
             <li key={post.id}>{post.title}</li>
@@ -31,4 +32,3 @@ export default class LoginButton extends React.Component {
     );
   }
 }
-
