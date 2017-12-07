@@ -52,13 +52,8 @@ var corsOptions = {
 //here is the magic
 app.use(cors(corsOptions));
 
-// Initialize Passport and restore authentication state, if any, from the
-// session.
-app.use(session({
-  secret: 'key',
-  resave: false,
-  saveUninitialized: true,
-}));
+// Initialize Passport 
+app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -75,14 +70,15 @@ app.get('/auth/strava/callback',
   passport.authenticate('strava', { failureRedirect: '/login/fail' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('http://127.0.0.1:3000');
+    res.redirect('http://localhost:3000');
   });
+
 app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', { user: req.user });
+  res.json('account', { user: req.user });
 });
 
+//doesn't really work, need to log out of strava
 app.get('/logout', function (req, res){
-  console.log('here');
   req.logout();
   req.session.destroy(function (err) {
       if (!err) {
@@ -112,7 +108,7 @@ var StravaStrategy = require('passport-strava').Strategy;
 passport.use(new StravaStrategy({
     clientID: process.env.STRAVA_CLIENT_ID,
     clientSecret: process.env.STRAVA_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:5000/auth/strava/callback"
+    callbackURL: "http://localhost:5000/auth/strava/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -152,12 +148,6 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/login')
 }
-
-app.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    res.render('profile', { user: req.user });
-  });
 
 const port = process.env.PORT || 5000;
 app.listen(port);

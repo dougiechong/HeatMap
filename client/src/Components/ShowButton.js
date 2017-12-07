@@ -17,18 +17,19 @@ export default class ShowButton extends React.Component {
       isShowOn: !prevState.isShowOn
     }));
     if(this.state.isShowOn){
-      axios.get('/user', {credentials: 'include'})
+      axios.get('/user')
         .then(res => {
           console.log(res.data);
+          console.log(res.data.id);
+          axios.get(`https://www.strava.com/api/v3/athletes/${res.data.id}/activities`, { 'headers': { 'Authorization': 'Bearer 482c702cfe2d9ae5f84309aa1b6f416bb17720da'} })
+            .then(res => {
+              console.log(res.data);
+              const activities = res.data.map(obj => obj.id);
+              console.log(activities);
+              this.setState({activities : activities});
+              console.log(this.state.activities);
+          });
         });
-      /*axios.get(`https://www.strava.com/api/v3/athletes/9238844/activities`, { 'headers': { 'Authorization': 'Bearer 482c702cfe2d9ae5f84309aa1b6f416bb17720da'} })
-        .then(res => {
-          console.log(res.data);
-          const activities = res.data.map(obj => obj.id);
-          console.log(activities);
-          this.setState({activities : activities});
-          console.log(this.state.activities);
-        });*/
     } else {
       this.setState({activities : []})
     }
@@ -41,7 +42,11 @@ export default class ShowButton extends React.Component {
           {this.state.isShowOn ? 'Show Activities' : 'Remove Activities'}
         </button>
         <div>
-          {this.state.activities}
+          <ul>
+            {this.state.activities.map(activity =>
+              <li key={activity}>{activity}</li>
+            )}
+          </ul>
         </div>
       </div>
     );
