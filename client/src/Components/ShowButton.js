@@ -19,15 +19,13 @@ export default class ShowButton extends React.Component {
     if(this.state.isShowOn){
       axios.get('/user')
         .then(res => {
-          console.log(res.data);
-          console.log(res.data.id);
           axios.get(`https://www.strava.com/api/v3/athletes/${res.data.id}/activities`, { 'headers': { 'Authorization': 'Bearer 482c702cfe2d9ae5f84309aa1b6f416bb17720da'} })
             .then(res => {
-              console.log(res.data);
+              //console.log(res.data);
               const activities = res.data.map(obj => obj.id);
-              console.log(activities);
+              //console.log(activities);
               this.setState({activities : activities});
-              console.log(this.state.activities);
+              //console.log(this.state.activities);
           });
         });
     } else {

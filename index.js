@@ -8,6 +8,10 @@ const express = require('express');
       mongoose = require('mongoose');
 
 require('dotenv').config();
+console.log(process.env.NODE_ENV);
+//make root variables for front end and backend
+const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
+const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' :  'http://localhost:5000';
 
 //connect to database
 //mongoose.connect(dbConfig.url);
@@ -63,6 +67,12 @@ app.get('/login/fail', (req, res) => {
   res.json('Strava Login Failed');
 });
 
+// Show log in failure message
+app.get('/login/fail', (req, res) => {
+  // Return them as json
+  res.json('Strava Login Failed');
+});
+
 app.get('/login/strava',
   passport.authenticate('strava'));
 
@@ -70,7 +80,7 @@ app.get('/auth/strava/callback',
   passport.authenticate('strava', { failureRedirect: '/login/fail' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('http://localhost:3000');
+    res.redirect(FRONT_END_ROOT);
   });
 
 app.get('/account', ensureAuthenticated, function(req, res){
@@ -93,7 +103,6 @@ app.get('/logout', function (req, res){
 app.get('/user',
   //passport.authenticate('strava', { failureRedirect: '/login/fail' }),
   function(req, res) {
-    console.log(req.user);
     res.json(req.user);
   });
 
@@ -108,7 +117,7 @@ var StravaStrategy = require('passport-strava').Strategy;
 passport.use(new StravaStrategy({
     clientID: process.env.STRAVA_CLIENT_ID,
     clientSecret: process.env.STRAVA_CLIENT_SECRET,
-    callbackURL: "http://localhost:5000/auth/strava/callback"
+    callbackURL: `${BACK_END_ROOT}/auth/strava/callback`
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
