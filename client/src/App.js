@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Header from './Components/Header';
-import FetchDemo from './Components/FetchDemo';
 import LoginButton from './Components/LoginButton';
+import LogoutButton from './Components/LogoutButton';
+import ShowButton from './Components/ShowButton';
+import Main from './Components/Main';
+import FetchDemo from './Components/FetchDemo';
 import './App.css';
 
 var styles = {
@@ -38,8 +41,9 @@ class App extends Component {
         <p className="App-intro" style={styles.appIntro}>
           To get started, log into strava.
         </p>
-        <FetchDemo subreddit="reactjs"/>
-        <LoginButton uid="482c702cfe2d9ae5f84309aa1b6f416bb17720da "/>
+        <LoginButton uid="482c702cfe2d9ae5f84309aa1b6f416bb17720da" subreddit="popular"/>
+        <LogoutButton/>
+        <ShowButton/>
       </div>
     );
   }

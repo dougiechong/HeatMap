@@ -13,8 +13,9 @@ export default class FetchDemo extends React.Component {
   componentDidMount() {
     axios.get(`http://www.reddit.com/r/${this.props.subreddit}.json`)
       .then(res => {
+        console.log(res.data.data.children);
         const posts = res.data.data.children.map(obj => obj.data);
-        console.log(posts);
+        //console.log(posts);
         this.setState({ posts });
       });
   }

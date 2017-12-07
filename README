@@ -1,5 +1,5 @@
-Run nodemon from the root folder.
+Make sure concurrently is installed
 
-Then in a second terminal run npm start from the client folder.
+Run npm start from the root folder (this will run nodemon for the server and npm start from the client folder concurrently)
 
 Ensure that you have obtained the Strava client Id and secret and put them both in a .env file.
