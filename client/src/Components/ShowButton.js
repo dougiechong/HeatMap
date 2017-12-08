@@ -15,11 +15,11 @@ export default class ShowButton extends React.Component {
       isShowOn: !prevState.isShowOn
     }));
     if(this.state.isShowOn){
-      axios.get('/login/fail')
+      axios.get('/api/passwords')
         .then(res => {
           console.log(res.data);
       });
-      axios.get('/user')
+      /*axios.get('/user')
         .then(res => {
           axios.get(`https://www.strava.com/api/v3/athletes/${res.data.id}/activities`, { 'headers': { 'Authorization': 'Bearer 482c702cfe2d9ae5f84309aa1b6f416bb17720da'} })
             .then(res => {
@@ -29,7 +29,7 @@ export default class ShowButton extends React.Component {
               this.setState({activities : activities});
               //console.log(this.state.activities);
           });
-        });
+        });*/
     } else {
       this.setState({activities : []})
     }
