@@ -19,7 +19,7 @@ export default class LoginButton extends React.Component {
 
   render() {
     return (
-      <a className = "Login-button" href={this.state.link}>
+      <a className = "Login-button" href={"https://www.strava.com/oauth/authorize?client_id=20778&response_type=code&redirect_uri=http://localhost:3000&scope=write&state=mystate&approval_prompt=force"}>
         <button>
           Login
         </button>
