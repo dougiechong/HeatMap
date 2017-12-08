@@ -15,7 +15,7 @@ export default class ShowButton extends React.Component {
       isShowOn: !prevState.isShowOn
     }));
     if(this.state.isShowOn){
-      axios.get('/api/passwords')
+      axios.get('/login/fail')
         .then(res => {
           console.log(res.data);
       });

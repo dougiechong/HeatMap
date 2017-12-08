@@ -127,15 +127,6 @@ passport.serializeUser(function(user, cb) {
 passport.deserializeUser(function(obj, cb) {
   cb(null, obj);
 });
-// Put all API endpoints under '/api'
-app.get('/api/passwords', (req, res) => {
-  const count = 5;
-
-  // Return them as json
-  res.json("hi");
-
-  console.log(`Sent ${count} passwords`);
-});
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
