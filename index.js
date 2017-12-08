@@ -111,7 +111,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
-var StravaStrategy = require('passport-strava').Strategy;
+var StravaStrategy = require('passport-strava-oauth2').Strategy;
  
 passport.use(new StravaStrategy({
     clientID: process.env.STRAVA_CLIENT_ID,
