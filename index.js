@@ -12,21 +12,18 @@ require('dotenv').config();
 const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
 const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' :  'http://localhost:5000';
 
-//connect to database
-//mongoose.connect(dbConfig.url);
-
-//see mongoose errors
-/*mongoose.connection.on('error', function(err) {
-    console.error('MongoDB error: %s', err);
-});*/
-
-var User = require('./models/users');
-
 const app = express();
 
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+
+// Show log in failure message
+app.get('/login/fail', (req, res) => {
+  // Return them as json
+  res.json('Strava Login Failed');
+});
 
 app.use(function(req, res, next){
     res.header("Access-Control-Allow-Origin", "*");
@@ -59,18 +56,6 @@ app.use(cors(corsOptions));
 app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Show log in failure message
-app.get('/login/fail', (req, res) => {
-  // Return them as json
-  res.json('Strava Login Failed');
-});
-
-// Show log in failure message
-app.get('/login/fail', (req, res) => {
-  // Return them as json
-  res.json('Strava Login Failed');
-});
 
 app.get('/login/strava',
   passport.authenticate('strava'));
