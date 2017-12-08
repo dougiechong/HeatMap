@@ -5,7 +5,6 @@ import LogoutButton from './Components/LogoutButton';
 import ShowButton from './Components/ShowButton';
 import './App.css';
 
-//nothing
 var styles = {
     appIntro: {
       fontSize: 'large'
