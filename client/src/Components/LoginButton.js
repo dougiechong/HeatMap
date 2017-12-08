@@ -14,6 +14,10 @@ export default class LoginButton extends React.Component {
     if(process.env.NODE_ENV === "development"){
       this.setState({link :"http://localhost:5000/login/strava"});
     } 
+    axios.get('/login/strava')
+      .then(res => {
+        console.log(res.data);
+    });
   }
 
   render() {

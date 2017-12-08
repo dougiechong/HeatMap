@@ -71,10 +71,6 @@ app.get('/auth/strava/callback',
     res.redirect(FRONT_END_ROOT);
   });
 
-app.get('/account', ensureAuthenticated, function(req, res){
-  res.json('account', { user: req.user });
-});
-
 //doesn't really work, need to log out of strava
 app.get('/logout', function (req, res){
   req.logout();
