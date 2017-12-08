@@ -3,8 +3,6 @@ import Header from './Components/Header';
 import LoginButton from './Components/LoginButton';
 import LogoutButton from './Components/LogoutButton';
 import ShowButton from './Components/ShowButton';
-import Main from './Components/Main';
-import FetchDemo from './Components/FetchDemo';
 import './App.css';
 
 //nothing
