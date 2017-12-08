@@ -44,6 +44,89 @@ var corsOptions = {
 //here is the magic
 app.use(cors(corsOptions));
 
+// Initialize Passport 
+app.use(session({ secret: 'keyboard cat' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Show log in failure message
+app.get('/login/fail', (req, res) => {
+  // Return them as json
+  res.json('Strava Login Failed');
+});
+
+// Show log in failure message
+app.get('/login/fail', (req, res) => {
+  // Return them as json
+  res.json('Strava Login Failed');
+});
+
+app.get('/login/strava',
+  passport.authenticate('strava'));
+
+app.get('/auth/strava/callback', 
+  passport.authenticate('strava', { failureRedirect: '/login/fail' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect(FRONT_END_ROOT);
+  });
+
+app.get('/account', ensureAuthenticated, function(req, res){
+  res.json('account', { user: req.user });
+});
+
+//doesn't really work, need to log out of strava
+app.get('/logout', function (req, res){
+  req.logout();
+  req.session.destroy(function (err) {
+      if (!err) {
+          res.status(200).clearCookie('connect.sid', {path: '/'}).json({status: "Success"});
+      } else {
+          // handle error case...
+      }
+
+  });
+});
+
+app.get('/user',
+  //passport.authenticate('strava', { failureRedirect: '/login/fail' }),
+  function(req, res) {
+    res.json(req.user);
+  });
+
+passport.use(new StravaStrategy({
+    clientID: process.env.STRAVA_CLIENT_ID,
+    clientSecret: process.env.STRAVA_CLIENT_SECRET,
+    callbackURL: `${BACK_END_ROOT}/auth/strava/callback`
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      // To keep the example simple, the user's Strava profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the Strava account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile);
+    });
+  }
+));
+
+// Configure Passport authenticated session persistence.
+//
+// In order to restore authentication state across HTTP requests, Passport needs
+// to serialize users into and deserialize users out of the session.  In a
+// production-quality application, this would typically be as simple as
+// supplying the user ID when serializing, and querying the user record by ID
+// from the database when deserializing.  However, due to the fact that this
+// example does not have a database, the complete Facebook profile is serialized
+// and deserialized.
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
 // Put all API endpoints under '/api'
 app.get('/api/passwords', (req, res) => {
   const count = 5;
