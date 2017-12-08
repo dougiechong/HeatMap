@@ -35,4 +35,5 @@ it('checks strava login button api', () => {
   const component = renderIntoDocument(<App/>);
   const loginButton = findRenderedDOMComponentWithClass(component, 'Login-button');
   expect(loginButton).to.be.ok;
+  
 });

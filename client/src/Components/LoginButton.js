@@ -24,7 +24,7 @@ export default class LoginButton extends React.Component {
 
   render() {
     return (
-      <a href={this.state.link}>
+      <a className = "Login-button" href={this.state.link}>
         <button>
           Login
         </button>
