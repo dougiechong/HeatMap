@@ -3,7 +3,6 @@ import Header from './Components/Header';
 import LoginButton from './Components/LoginButton';
 import LogoutButton from './Components/LogoutButton';
 import ShowButton from './Components/ShowButton';
-import TestButton from './Components/TestButton';
 import './App.css';
 
 var styles = {
@@ -43,7 +42,6 @@ class App extends Component {
         <LoginButton uid="482c702cfe2d9ae5f84309aa1b6f416bb17720da" subreddit="popular"/>
         <LogoutButton/>
         <ShowButton/>
-        <TestButton/>
       </div>
     );
   }
