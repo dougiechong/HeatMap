@@ -19,6 +19,10 @@ export default class ShowButton extends React.Component {
         .then(res => {
           console.log(res.data);
       });
+      axios.get('/login/fail')
+        .then(res => {
+          console.log(res.data);
+      });
       /*axios.get('/user')
         .then(res => {
           axios.get(`https://www.strava.com/api/v3/athletes/${res.data.id}/activities`, { 'headers': { 'Authorization': 'Bearer 482c702cfe2d9ae5f84309aa1b6f416bb17720da'} })
