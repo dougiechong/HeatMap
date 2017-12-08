@@ -1,0 +1,29 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:5000",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "chai": "^4.1.2",
+    "client-oauth2": "^4.1.0",
+    "jsdom": "^11.2.0",
+    "mocha": "^3.5.3",
+    "react": "^16.0.0-beta.5",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^15.6.1",
+    "react-native": "^0.51.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.13"
+  },
+  "scripts": {
+    "start": "NODE_PATH=src react-scripts start",
+    "build": "react-scripts build",
+    "test": "NODE_PATH=src react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "homepage": "http://stravaheatmaps.herokuapp.com",
+  "devDependencies": {
+    "chai-style": "^1.0.2"
+  }
+}
