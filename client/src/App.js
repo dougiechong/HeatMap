@@ -37,7 +37,7 @@ class App extends Component {
       <div className="App" style={styles.app}>
         <Header/>
         <p className="App-intro" style={styles.appIntro}>
-          To get started, logfafd intoD?F?S?D strava.
+          To get started, login to strava.
         </p>
         <LoginButton uid="482c702cfe2d9ae5f84309aa1b6f416bb17720da" subreddit="popular"/>
         <LogoutButton/>
