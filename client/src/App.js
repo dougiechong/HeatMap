@@ -34,17 +34,17 @@ class App extends Component {
       .then(res => res.json())
       .then(password => this.setState({password}));
   }*/
-          /*<Header/>
+
+  render() {
+    return (
+      <div className="App" style={styles.app}>
+        <Header/>
         <p className="App-intro" style={styles.appIntro}>
           To get started, log into strava.
         </p>
         <LoginButton uid="482c702cfe2d9ae5f84309aa1b6f416bb17720da" subreddit="popular"/>
         <LogoutButton/>
-        <ShowButton/>*/
-
-  render() {
-    return (
-      <div className="App" style={styles.app}>
+        <ShowButton/>
       </div>
     );
   }
