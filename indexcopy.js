@@ -1,27 +1,32 @@
-const express = require('express'),
-      //session = require('express-session'),
-      path = require('path');
-      //passport = require('passport'),
-      //StravaStrategy = require('passport-strava-oauth2').Strategy,
-      //cors = require('cors');
+const express = require('express');
+      session = require('express-session'),
+      path = require('path'),
+      passport = require('passport'),
+      StravaStrategy = require('passport-strava-oauth2').Strategy,
+      cors = require('cors'),
+      dbConfig = require('./db.js'),
+      mongoose = require('mongoose');
 
-//require('dotenv').config();
+require('dotenv').config();
 //make root variables for front end and backend
-//const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
-//const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' :  'http://localhost:5000';
+const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
+const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' :  'http://localhost:5000';
 
-//const app = express();
+//connect to database
+//mongoose.connect(dbConfig.url);
+
+//see mongoose errors
+/*mongoose.connection.on('error', function(err) {
+    console.error('MongoDB error: %s', err);
+});*/
+
+var User = require('./models/users');
+
+const app = express();
 
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
-
-
-// Show log in failure message
-app.get('/login/fail', (req, res) => {
-  // Return them as json
-  res.json('Strava Login Failed');
-});
 
 app.use(function(req, res, next){
     res.header("Access-Control-Allow-Origin", "*");
@@ -36,7 +41,7 @@ app.options('/user', function (req, res) {
   res.end();
 });
 
-/*var originsWhitelist = [
+var originsWhitelist = [
   'http://localhost:3000',      //this is my front-end url for development
    'http://www.stravaheatmaps.com'
 ];
@@ -48,12 +53,24 @@ var corsOptions = {
   credentials:true
 }
 //here is the magic
-app.use(cors(corsOptions));*/
+app.use(cors(corsOptions));
 
 // Initialize Passport 
-/*app.use(session({ secret: 'keyboard cat' }));
+app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Show log in failure message
+app.get('/login/fail', (req, res) => {
+  // Return them as json
+  res.json('Strava Login Failed');
+});
+
+// Show log in failure message
+app.get('/login/fail', (req, res) => {
+  // Return them as json
+  res.json('Strava Login Failed');
+});
 
 app.get('/login/strava',
   passport.authenticate('strava'));
@@ -91,7 +108,7 @@ app.get('/user',
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/indgsdfex.html'));
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
  
 passport.use(new StravaStrategy({
@@ -136,7 +153,7 @@ passport.deserializeUser(function(obj, cb) {
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/login')
-}*/
+}
 
 const port = process.env.PORT || 5000;
 app.listen(port);
