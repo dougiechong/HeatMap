@@ -10,7 +10,7 @@ const express = require('express'),
 //const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
 //const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' :  'http://localhost:5000';
 
-const app = express();
+//const app = express();
 
 
 // Serve static files from the React app
