@@ -12,7 +12,7 @@ export default class LoginButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      link: "http://www.stravaheatmaps.herokuapps.com/login/strava"
+      link: "http://www.stravaheatmaps.herokuapp.com/login/strava"
     };
   }
 

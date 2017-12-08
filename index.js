@@ -9,8 +9,8 @@ const express = require('express');
 
 require('dotenv').config();
 //make root variables for front end and backend
-const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
-const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' :  'http://localhost:5000';
+const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://www.stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
+const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://www.stravaheatmaps.herokuapp.com' :  'http://localhost:5000';
 
 //connect to database
 //mongoose.connect(dbConfig.url);
