@@ -1,6 +1,16 @@
 const express = require('express');
-const path = require('path');
-const generatePassword = require('password-generator');
+      session = require('express-session'),
+      path = require('path'),
+      passport = require('passport'),
+      StravaStrategy = require('passport-strava-oauth2').Strategy,
+      cors = require('cors'),
+      dbConfig = require('./db.js'),
+      mongoose = require('mongoose');
+
+require('dotenv').config();
+//make root variables for front end and backend
+const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
+const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' :  'http://localhost:5000';
 
 const app = express();
 
@@ -11,13 +21,8 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.get('/api/passwords', (req, res) => {
   const count = 5;
 
-  // Generate some passwords
-  const passwords = Array.from(Array(count).keys()).map(i =>
-    generatePassword(12, false)
-  )
-
   // Return them as json
-  res.json(passwords);
+  res.json("hi");
 
   console.log(`Sent ${count} passwords`);
 });
