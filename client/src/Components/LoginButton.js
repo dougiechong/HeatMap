@@ -17,7 +17,7 @@ export default class LoginButton extends React.Component {
   }
 
   componentDidMount() {
-    if(process.env.NODE_ENV == "development"){
+    if(process.env.NODE_ENV === "development"){
       this.setState({link :"http://localhost:5000/login/strava"});
     } 
   }
