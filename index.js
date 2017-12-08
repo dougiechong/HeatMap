@@ -20,8 +20,6 @@ const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.
     console.error('MongoDB error: %s', err);
 });*/
 
-var User = require('./models/users');
-
 const app = express();
 
 
