@@ -9,7 +9,7 @@ export default class ShowButton extends React.Component {
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
   }
-
+  //hopefully update?
   handleClick() {
     this.setState(prevState => ({
       isShowOn: !prevState.isShowOn
