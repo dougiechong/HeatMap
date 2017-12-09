@@ -3,6 +3,7 @@ import Header from './Components/Header';
 import LoginButton from './Components/LoginButton';
 import LogoutButton from './Components/LogoutButton';
 import ShowButton from './Components/ShowButton';
+import Main from './Components/Main';
 import './App.css';
 
 var styles = {
@@ -36,12 +37,7 @@ class App extends Component {
     return (
       <div className="App" style={styles.app}>
         <Header/>
-        <p className="App-intro" style={styles.appIntro}>
-          To get started, login to strava.
-        </p>
-        <LoginButton uid="482c702cfe2d9ae5f84309aa1b6f416bb17720da" subreddit="popular"/>
-        <LogoutButton/>
-        <ShowButton/>
+        <Main/>
       </div>
     );
   }
