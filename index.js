@@ -88,7 +88,8 @@ passport.use('login', new LocalStrategy({
           var newUser = new User();
           // set the user's local credentials
           newUser.email = email;
-          newUser.access_token= req.params.access_token;
+          newUser.access_token= req.body.access_token;
+          newUser.id = req.body.id
           //newUser.lastName = req.param('lastName');
  
           // save the user
