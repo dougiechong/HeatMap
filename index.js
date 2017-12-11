@@ -7,6 +7,8 @@ const express = require('express');
       dbConfig = require('./db.js'),
       mongoose = require('mongoose');
 
+const axios = require('axios');
+
 require('dotenv').config();
 //make root variables for front end and backend
 const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
@@ -84,10 +86,25 @@ app.get('/logout', function (req, res){
   });
 });
 
-app.get('/user',
+/*app.get('/user',
   //passport.authenticate('strava', { failureRedirect: '/login/fail' }),
   function(req, res) {
     res.json(req.user);
+  });*/
+
+//should switch to a login route and save access token to user model
+app.get('/user/:code',
+  function(req, res) {
+    axios.post('https://www.strava.com/oauth/token', {
+      client_id: process.env.STRAVA_CLIENT_ID,
+      client_secret: process.env.STRAVA_CLIENT_SECRET,
+      code: req.params.code
+    }).then(function (response) {
+      res.json(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   });
 
 passport.use(new StravaStrategy({

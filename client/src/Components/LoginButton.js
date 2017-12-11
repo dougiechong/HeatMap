@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-const qs = require('query-string');
 
 require('dotenv').config();
 
@@ -19,6 +18,34 @@ export default class LoginButton extends React.Component {
     //workaround now is just post if the code is there
     if(this.props.code){
       console.log(this.props.code);
+      axios.get(`/user/${this.props.code}`)
+      .then(res => {
+        console.log(res.data.access_token);
+        console.log(res.data.athlete.id);
+        console.log(res.data);
+        axios.get(`https://www.strava.com/api/v3/athletes/${res.data.athlete.id}/activities`, { 'headers': { 'Authorization': `Bearer ${res.data.access_token}`} })
+          .then(res => {
+            console.log(res.data);
+            const activities = res.data.map(obj => obj.id);
+            console.log(activities);
+            //this.setState({activities : activities});
+            //console.log(this.state.activities);
+        });
+      });
+      //post to get access token
+      /*axios.post('https://www.strava.com/oauth/token', {
+        client_id: '20778',
+        client_secret: '50d5225f56f83566b20d7bbae9e10cc4ccc59b56',
+        code: this.props.code
+      })
+      .then(function (response) {
+        console.log(response);
+        console.log(response.data)
+        console.log(response.data.access_token)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });*/
     }
   }
 
