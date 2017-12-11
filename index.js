@@ -2,19 +2,28 @@ const express = require('express');
       session = require('express-session'),
       path = require('path'),
       passport = require('passport'),
-      StravaStrategy = require('passport-strava-oauth2').Strategy,
+      LocalStrategy = require('passport-local').Strategy,
       cors = require('cors'),
       dbConfig = require('./db.js'),
-      mongoose = require('mongoose');
+      mongoose = require('mongoose'),
+      flash=require("connect-flash");
+      bodyParser= require("body-parser");
 
 const axios = require('axios');
+var User = require('./models/user');
 
 require('dotenv').config();
+mongoose.connect(dbConfig.url, { useMongoClient: true });
+
 //make root variables for front end and backend
 const FRONT_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' : 'http://localhost:3000';
 const BACK_END_ROOT =  process.env.NODE_ENV ? 'https://stravaheatmaps.herokuapp.com' :  'http://localhost:5000';
 
 const app = express();
+
+app.use(flash());
+app.use(bodyParser.urlencoded({ extended: false })) // parse application/x-www-form-urlencoded
+app.use(bodyParser.json()) // parse application/json
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -23,13 +32,6 @@ app.use(function(req, res, next){
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "*");
     next();
-});
-
-app.options('/user', function (req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader('Access-Control-Allow-Methods', '*');
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  res.end();
 });
 
 var originsWhitelist = [
@@ -51,50 +53,88 @@ app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Show log in failure message
-app.get('/login/fail', (req, res) => {
-  // Return them as json
-  res.json('Strava Login Failed');
-});
+//make email and pw fields email
+passport.use('login', new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'email',
+    passReqToCallback : true
+  },
+  function(req, email, password, done) {
+    console.log('local strategy called with: %s, pw is %s', email, password);
+    console.log('params %s', req.params.code);
+    findOrCreateUser = function(){
+      // find a user in Mongo with provided username
+      User.findOne({'email':email},function(err, user) {
+        // In case of any error return
+        if (err){
+          console.log('Error in SignUp: '+err);
+          return done(err);
+        }
+        // already exists just update token
+        if (user) {
+          console.log(req.body.access_token);
+          console.log('User already exists');
+          User.update({'email': email}, {
+                  access_token: req.body.access_token,
+                  id: req.body.id
+              },function(err) {
+                 if (err) console.log(err);
+              });
+          return done(null, user);
+        } else {
+          console.log('new user');
+          // if there is no user with that email
+          // create the user
+          var newUser = new User();
+          // set the user's local credentials
+          newUser.email = email;
+          newUser.access_token= req.params.access_token;
+          //newUser.lastName = req.param('lastName');
+ 
+          // save the user
+          newUser.save(function(err) {
+            if (err){
+              console.log('Error in Saving user: '+err);  
+              throw err;  
+            }
+            console.log('User Registration succesful');    
+            return done(null, newUser);
+            //return done(null, {name: email});
+          });
+        }
+      });
+    }
+     
+    // Delay the execution of findOrCreateUser and execute 
+    // the method in the next tick of the event loop
+    process.nextTick(findOrCreateUser);
+  })
+);
 
-// Show log in failure message
-app.get('/login/fail', (req, res) => {
-  // Return them as json
-  res.json('Strava Login Failed');
-});
+/* Handle Login POST */
+app.post('/login/:code', passport.authenticate('login', {
+  successRedirect: '/',
+  failureRedirect: '/',
+  failureFlash : true 
+}));
 
-app.get('/login/strava',
-  passport.authenticate('strava'));
+// As with any middleware it is quintessential to call next()
+// if the user is authenticated
+var isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.redirect('/');
+}
 
-app.get('/auth/strava/callback', 
-  passport.authenticate('strava', { failureRedirect: '/login/fail' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect(FRONT_END_ROOT);
-  });
-
-//doesn't really work, need to log out of strava
-app.get('/logout', function (req, res){
-  req.logout();
-  req.session.destroy(function (err) {
-      if (!err) {
-          res.status(200).clearCookie('connect.sid', {path: '/'}).json({status: "Success"});
-      } else {
-          // handle error case...
-      }
-
-  });
-});
-
-/*app.get('/user',
-  //passport.authenticate('strava', { failureRedirect: '/login/fail' }),
+app.get('/user', isAuthenticated,
   function(req, res) {
     res.json(req.user);
-  });*/
+});
 
 //should switch to a login route and save access token to user model
 app.get('/user/:code',
   function(req, res) {
+    console.log(req.session);
     axios.post('https://www.strava.com/oauth/token', {
       client_id: process.env.STRAVA_CLIENT_ID,
       client_secret: process.env.STRAVA_CLIENT_SECRET,
@@ -107,38 +147,15 @@ app.get('/user/:code',
     });
   });
 
-passport.use(new StravaStrategy({
-    clientID: process.env.STRAVA_CLIENT_ID,
-    clientSecret: process.env.STRAVA_CLIENT_SECRET,
-    callbackURL: `${BACK_END_ROOT}/auth/strava/callback`
-  },
-  function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-      // To keep the example simple, the user's Strava profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Strava account with a user record in your database,
-      // and return that user instead.
-      return done(null, profile);
-    });
-  }
-));
-
-// Configure Passport authenticated session persistence.
-//
-// In order to restore authentication state across HTTP requests, Passport needs
-// to serialize users into and deserialize users out of the session.  In a
-// production-quality application, this would typically be as simple as
-// supplying the user ID when serializing, and querying the user record by ID
-// from the database when deserializing.  However, due to the fact that this
-// example does not have a database, the complete Facebook profile is serialized
-// and deserialized.
-passport.serializeUser(function(user, cb) {
-  cb(null, user);
+//serialize and deserialize
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
 });
 
-passport.deserializeUser(function(obj, cb) {
-  cb(null, obj);
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
 });
 
 // The "catchall" handler: for any request that doesn't
@@ -150,4 +167,4 @@ app.get('*', (req, res) => {
 const port = process.env.PORT || 5000;
 app.listen(port);
 
-console.log(`Password generator listening on ${port}`);
+console.log(`Heatmap listening on ${port}`);

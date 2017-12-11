@@ -1,5 +1,6 @@
 import React from 'react'
 import LoginButton from './LoginButton'
+import ShowButton from './ShowButton'
 
 const Home = (props) => {
   const search = props.location.search; // could be '?foo=bar
@@ -9,6 +10,7 @@ const Home = (props) => {
   <div>
     <h1>Login to get started!</h1>
     <LoginButton code={code}/>
+    <ShowButton code={code}/>
   </div>
   )
 }
