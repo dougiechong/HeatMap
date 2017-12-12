@@ -75,8 +75,7 @@ passport.use('login', new LocalStrategy({
           console.log(req.body.access_token);
           console.log('User already exists');
           User.update({'email': email}, {
-                  access_token: req.body.access_token,
-                  id: req.body.id
+                  access_token: req.body.access_token
               },function(err) {
                  if (err) console.log(err);
               });
@@ -90,7 +89,7 @@ passport.use('login', new LocalStrategy({
           newUser.email = email;
           newUser.access_token= req.body.access_token;
           newUser.id = req.body.id
-          //newUser.lastName = req.param('lastName');
+          newUser.firstname = req.body.firstname;
  
           // save the user
           newUser.save(function(err) {

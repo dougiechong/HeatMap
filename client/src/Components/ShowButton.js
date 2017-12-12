@@ -22,9 +22,7 @@ export default class ShowButton extends React.Component {
             .then(res => {
               console.log(res.data);
               const activities = res.data.map(obj => obj.id);
-              console.log(activities);
               this.setState({activities : activities});
-              console.log(this.state.activities);
           });
         });
     } else {
