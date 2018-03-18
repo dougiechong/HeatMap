@@ -3,7 +3,6 @@ import LoginButton from './LoginButton'
 import ShowButton from './ShowButton'
 
 const Login = (props) => {
-  console.log('ghdsfasfii');
   const k =8;
   return (
   <div>

@@ -1,3 +1,5 @@
 Run nodemon from the root folder for the server and npm start from the client folder for the client
 
+Ensure that mongod is running 
+
 Ensure that you have obtained the Strava client Id and secret and put them both in a .env file.
