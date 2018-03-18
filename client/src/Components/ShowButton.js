@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import MapBoxMap from './MapBox';
 
 export default class ShowButton extends React.Component {
   constructor(props) {
@@ -37,6 +38,7 @@ export default class ShowButton extends React.Component {
           {this.state.isShowOn ? 'Show Activities' : 'Remove Activities'}
         </button>
         <div>
+          <MapBoxMap/>
           <ul>
             {this.state.activities.map(activity =>
               <li key={activity}>{activity}</li>
