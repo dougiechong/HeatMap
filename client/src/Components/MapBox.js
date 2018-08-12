@@ -11,6 +11,7 @@ export default class MapBoxMap extends React.Component {
     return (
       <Map
         style="mapbox://styles/mapbox/streets-v9"
+        center={[-79.379769,43.647151]}
         containerStyle={{
           height: "100vh",
           width: "100vw"
@@ -19,7 +20,7 @@ export default class MapBoxMap extends React.Component {
             type="symbol"
             id="marker"
             layout={{ "icon-image": "marker-15" }}>
-            <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
+            <Feature coordinates={[-79.379769,43.647151]}/>
           </Layer>
       </Map>
     );

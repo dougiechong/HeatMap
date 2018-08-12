@@ -12,7 +12,7 @@ export default class LoginButton extends React.Component {
   }
 
   componentDidMount() {
-    if(process.env.NODE_ENV == "development"){
+    if(process.env.NODE_ENV === "development"){
       this.setState({link :"https://www.strava.com/oauth/authorize?client_id=20778&response_type=code&redirect_uri=http://localhost:3000&scope=write&state=mystate&approval_prompt=force"});
     } 
     //workaround now is just post if the code is there
